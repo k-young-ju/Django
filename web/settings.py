@@ -14,6 +14,8 @@ from pathlib import Path
 import environ
 import os
 
+from django.urls import reverse_lazy
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -46,6 +48,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "bootstrap4",
+    "account",
+    "profiles",
 ]
 
 MIDDLEWARE = [
@@ -63,7 +68,10 @@ ROOT_URLCONF = "web.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
+        "DIRS": [
+            BASE_DIR / 'templates',
+        #os.path.join(BASE_DIR,"templates"),
+        ]
         ,
         "APP_DIRS": True,
         "OPTIONS": {
@@ -127,7 +135,20 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+   BASE_DIR / "static"
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = reverse_lazy("account:root")
+LOGOUT_REDIRECT_URL = reverse_lazy("account:login")
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
